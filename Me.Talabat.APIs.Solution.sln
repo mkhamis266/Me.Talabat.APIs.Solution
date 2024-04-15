@@ -5,6 +5,12 @@ VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Me.Talabat.APIs", "Me.Talabat.APIs\Me.Talabat.APIs.csproj", "{47504488-1515-41DE-956C-511E44B6E480}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Me.Talabt.Core", "Me.Talabt.Core\Me.Talabt.Core.csproj", "{DD95891F-E3B8-4DD8-9ABE-8F02BEE182D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Me.Talabat.InfraStructure", "Me.Talabat.InfraStructure\Me.Talabat.InfraStructure.csproj", "{736C60DA-61EB-440F-BCCE-FC568BD07D0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Me.Talabat.Application", "Me.Talabat.Application\Me.Talabat.Application.csproj", "{56E8B27F-EACE-463F-B5F3-39D50348BCFC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{47504488-1515-41DE-956C-511E44B6E480}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47504488-1515-41DE-956C-511E44B6E480}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47504488-1515-41DE-956C-511E44B6E480}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD95891F-E3B8-4DD8-9ABE-8F02BEE182D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD95891F-E3B8-4DD8-9ABE-8F02BEE182D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD95891F-E3B8-4DD8-9ABE-8F02BEE182D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD95891F-E3B8-4DD8-9ABE-8F02BEE182D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{736C60DA-61EB-440F-BCCE-FC568BD07D0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{736C60DA-61EB-440F-BCCE-FC568BD07D0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{736C60DA-61EB-440F-BCCE-FC568BD07D0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{736C60DA-61EB-440F-BCCE-FC568BD07D0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56E8B27F-EACE-463F-B5F3-39D50348BCFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56E8B27F-EACE-463F-B5F3-39D50348BCFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56E8B27F-EACE-463F-B5F3-39D50348BCFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56E8B27F-EACE-463F-B5F3-39D50348BCFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
