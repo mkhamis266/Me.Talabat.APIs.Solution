@@ -21,8 +21,11 @@ namespace Me.Talabat.APIs
 			});
 			#endregion
 
+			
 			var app = webApplicationBuilder.Build();
-
+			var scope = app.Services.CreateScope();
+			var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+			dbContext.Database.Migrate();
 			#region Cinfigurations
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())
