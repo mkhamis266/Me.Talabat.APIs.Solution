@@ -1,8 +1,10 @@
 
 using System.IdentityModel.Tokens.Jwt;
 using System.Text.Json;
+using Me.Talabat.InfraStructure;
 using Me.Talabat.InfraStructure.Data;
 using Me.Talabt.Core.Entities;
+using Me.Talabt.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Me.Talabat.APIs
@@ -22,6 +24,7 @@ namespace Me.Talabat.APIs
 			webApplicationBuilder.Services.AddDbContext<ApplicationDbContext>(options => {
 				options.UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("defaultConnection"));
 			});
+			webApplicationBuilder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 			#endregion
 
 			
