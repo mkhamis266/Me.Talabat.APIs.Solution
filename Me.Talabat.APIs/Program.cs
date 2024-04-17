@@ -1,9 +1,17 @@
 
+using System.IdentityModel.Tokens.Jwt;
+using System.Text.Json;
+using Me.Talabat.InfraStructure;
+using Me.Talabat.InfraStructure.Data;
+using Me.Talabt.Core.Entities;
+using Me.Talabt.Core.Repositories;
+using Microsoft.EntityFrameworkCore;
+
 namespace Me.Talabat.APIs
 {
 	public class Program
 	{
-		public static void Main(string[] args)
+		public static async void Main(string[] args)
 		{
 			var webApplicationBuilder = WebApplication.CreateBuilder(args);
 
@@ -12,11 +20,28 @@ namespace Me.Talabat.APIs
 			webApplicationBuilder.Services.AddControllers();
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			webApplicationBuilder.Services.AddEndpointsApiExplorer();
-			webApplicationBuilder.Services.AddSwaggerGen(); 
+			webApplicationBuilder.Services.AddSwaggerGen();
+			webApplicationBuilder.Services.AddDbContext<ApplicationDbContext>(options => {
+				options.UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("defaultConnection"));
+			});
+			webApplicationBuilder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 			#endregion
 
-			var app = webApplicationBuilder.Build();
-
+			
+			using var app = webApplicationBuilder.Build();
+			var scope = app.Services.CreateScope();
+			var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+			var  LoggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
+			try
+			{
+				await dbContext.Database.MigrateAsync();
+				await ApplicationContextSeed.SeedAsync(dbContext);
+			}
+			catch (Exception ex)
+			{
+				var logger = LoggerFactory.CreateLogger<Program>();
+				logger.LogError(ex.Message, "an error occured while updating database");
+			}
 			#region Cinfigurations
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())
@@ -30,9 +55,10 @@ namespace Me.Talabat.APIs
 			app.UseAuthorization();
 
 
-			app.MapControllers(); 
+			app.MapControllers();
 			#endregion
 
+			
 			app.Run();
 		}
 	}
