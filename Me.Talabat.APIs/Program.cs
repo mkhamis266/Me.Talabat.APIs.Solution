@@ -11,7 +11,7 @@ namespace Me.Talabat.APIs
 {
 	public class Program
 	{
-		public static async void Main(string[] args)
+		public static async Task Main(string[] args)
 		{
 			var webApplicationBuilder = WebApplication.CreateBuilder(args);
 
