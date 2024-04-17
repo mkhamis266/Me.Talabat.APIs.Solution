@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text.Json;
 using Me.Talabat.APIs.Errors;
 using Me.Talabat.APIs.Helpers;
+using Me.Talabat.APIs.Middlewares;
 using Me.Talabat.InfraStructure;
 using Me.Talabat.InfraStructure.Data;
 using Me.Talabt.Core.Entities;
@@ -63,6 +64,7 @@ namespace Me.Talabat.APIs
 				logger.LogError(ex.Message, "an error occured while updating database");
 			}
 			#region Cinfigurations
+			app.UseMiddleware<ExceptionMiddleware>();
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())
 			{

@@ -4,7 +4,7 @@
 	{
         public IEnumerable<string?> Errors { get; set; }
 
-        public ValidationErrorApiResponse():base(400)
+        public ValidationErrorApiResponse(string? message = null):base(400,message)
         {
             
         }
