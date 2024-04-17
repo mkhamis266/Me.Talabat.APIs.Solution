@@ -1,11 +1,13 @@
 
 using System.IdentityModel.Tokens.Jwt;
 using System.Text.Json;
+using Me.Talabat.APIs.Errors;
 using Me.Talabat.APIs.Helpers;
 using Me.Talabat.InfraStructure;
 using Me.Talabat.InfraStructure.Data;
 using Me.Talabt.Core.Entities;
 using Me.Talabt.Core.Repositories;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Me.Talabat.APIs
@@ -27,6 +29,22 @@ namespace Me.Talabat.APIs
 			});
 			webApplicationBuilder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 			webApplicationBuilder.Services.AddAutoMapper(typeof(MappingProfiles));
+
+			webApplicationBuilder.Services.Configure<ApiBehaviorOptions>(options =>
+			{
+				options.InvalidModelStateResponseFactory = (actionContext) => 
+				{
+					var errors = actionContext.ModelState.Where(P => P.Value.Errors.Count >0)
+															.SelectMany(P=>P.Value.Errors)
+															.Select(P=> P.ErrorMessage)
+															.ToArray();
+					var response = new ValidationErrorApiResponse()
+					{
+						Errors = errors
+					};
+					return new BadRequestObjectResult(response);
+				};
+			});
 			#endregion
 
 			
