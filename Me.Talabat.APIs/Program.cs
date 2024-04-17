@@ -1,17 +1,22 @@
 
 using System.IdentityModel.Tokens.Jwt;
 using System.Text.Json;
+using Me.Talabat.APIs.Errors;
+using Me.Talabat.APIs.Extentions;
+using Me.Talabat.APIs.Helpers;
+using Me.Talabat.APIs.Middlewares;
 using Me.Talabat.InfraStructure;
 using Me.Talabat.InfraStructure.Data;
 using Me.Talabt.Core.Entities;
 using Me.Talabt.Core.Repositories;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Me.Talabat.APIs
 {
 	public class Program
 	{
-		public static async void Main(string[] args)
+		public static async Task Main(string[] args)
 		{
 			var webApplicationBuilder = WebApplication.CreateBuilder(args);
 
@@ -19,19 +24,20 @@ namespace Me.Talabat.APIs
 			#region Services Configuartions
 			webApplicationBuilder.Services.AddControllers();
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-			webApplicationBuilder.Services.AddEndpointsApiExplorer();
-			webApplicationBuilder.Services.AddSwaggerGen();
+
+			webApplicationBuilder.Services.AddSwaggerServices();
 			webApplicationBuilder.Services.AddDbContext<ApplicationDbContext>(options => {
 				options.UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("defaultConnection"));
 			});
-			webApplicationBuilder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+			webApplicationBuilder.Services.AddApplicationService();
 			#endregion
 
-			
+
+			#region Migration and DataSeeding
 			using var app = webApplicationBuilder.Build();
 			var scope = app.Services.CreateScope();
 			var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-			var  LoggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
+			var LoggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
 			try
 			{
 				await dbContext.Database.MigrateAsync();
@@ -41,20 +47,22 @@ namespace Me.Talabat.APIs
 			{
 				var logger = LoggerFactory.CreateLogger<Program>();
 				logger.LogError(ex.Message, "an error occured while updating database");
-			}
+			} 
+			#endregion
+
 			#region Cinfigurations
+			app.UseMiddleware<ExceptionMiddleware>();
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())
 			{
-				app.UseSwagger();
-				app.UseSwaggerUI();
+				app.UseSwaggerMiddlewares();
 			}
-
+			app.UseStatusCodePagesWithReExecute("/errors/{0}");
 			app.UseHttpsRedirection();
 
 			app.UseAuthorization();
 
-
+			app.UseStaticFiles();
 			app.MapControllers();
 			#endregion
 
