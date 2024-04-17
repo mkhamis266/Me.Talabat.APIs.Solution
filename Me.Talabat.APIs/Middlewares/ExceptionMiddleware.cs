@@ -1,4 +1,5 @@
 ﻿
+using System.Net;
 using System.Text.Json;
 using Me.Talabat.APIs.Errors;
 
@@ -26,7 +27,7 @@ namespace Me.Talabat.APIs.Middlewares
 			{
 				_logger.LogError(ex.Message);
 
-				context.Response.StatusCode = 500;
+				context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
 				context.Response.ContentType = "application/json";
 				var response = _env.IsDevelopment() ? new ExceptionApiResponse(ex.Message, ex.StackTrace)
 				:
