@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Net;
+using AutoMapper;
 using Me.Talabat.APIs.DTOs;
 using Me.Talabat.APIs.Errors;
 using Me.Talabt.Core.Entities;
@@ -21,6 +22,8 @@ namespace Me.Talabat.APIs.Controllers
 		}
 
 		[HttpGet]
+		[ProducesResponseType(typeof(IEnumerable<ProductToReturnDTO>), StatusCodes.Status200OK)]
+		[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
 		public async Task<ActionResult<IEnumerable<ProductToReturnDTO>>> GetProducts()
 		{
 			//var products = await _productRepository.GetAllAsync();0
@@ -35,6 +38,8 @@ namespace Me.Talabat.APIs.Controllers
 
 
 		[HttpGet("{id}")]
+		[ProducesResponseType(typeof(ProductToReturnDTO), 200)]
+		[ProducesResponseType(typeof(ApiResponse), 404)]
 		public async Task<ActionResult<ProductToReturnDTO>> GetProduct(int id)
 		{
 			//var product = await _productRepository.GetAsync(id);
