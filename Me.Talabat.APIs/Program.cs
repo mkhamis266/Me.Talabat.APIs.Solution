@@ -1,6 +1,7 @@
 
 using System.IdentityModel.Tokens.Jwt;
 using System.Text.Json;
+using Me.Talabat.APIs.Helpers;
 using Me.Talabat.InfraStructure;
 using Me.Talabat.InfraStructure.Data;
 using Me.Talabt.Core.Entities;
@@ -25,6 +26,7 @@ namespace Me.Talabat.APIs
 				options.UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("defaultConnection"));
 			});
 			webApplicationBuilder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+			webApplicationBuilder.Services.AddAutoMapper(typeof(MappingProfiles));
 			#endregion
 
 			
