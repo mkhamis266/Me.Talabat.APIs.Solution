@@ -1,4 +1,5 @@
-﻿using Me.Talabat.InfraStructure.Data;
+﻿using Me.Talabat.APIs.Errors;
+using Me.Talabat.InfraStructure.Data;
 using Me.Talabt.Core.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ namespace Me.Talabat.APIs.Controllers
 			if (Product is not null)
 				return Ok(Product);
 
-			return NotFound();
+			return NotFound(new ApiResponse(404));
 		}
 
 		[HttpGet("servererror")]
@@ -34,7 +35,7 @@ namespace Me.Talabat.APIs.Controllers
 		[HttpGet("badrequest")]
 		public ActionResult GetBaddRequest()
 		{
-			return BadRequest();
+			return BadRequest(new ApiResponse(400));
 		}
 		[HttpGet("badrequest/{id}")] //badrequest/five
 		public ActionResult GetBaddRequest(int id)
@@ -44,7 +45,7 @@ namespace Me.Talabat.APIs.Controllers
 		[HttpGet("unauthorized")] //badrequest/five
 		public ActionResult GetUnauthorized(int id)
 		{
-			return Unauthorized();
+			return Unauthorized(new ApiResponse(401));
 		}
 	}
 }

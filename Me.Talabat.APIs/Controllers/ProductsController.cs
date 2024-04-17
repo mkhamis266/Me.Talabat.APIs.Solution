@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Me.Talabat.APIs.DTOs;
+using Me.Talabat.APIs.Errors;
 using Me.Talabt.Core.Entities;
 using Me.Talabt.Core.Repositories;
 using Me.Talabt.Core.Specifications;
@@ -27,7 +28,7 @@ namespace Me.Talabat.APIs.Controllers
 			var products = await _productRepository.GetAllWithSpecsAsync(productSpecs);
 
 			if (products is null)
-				return NotFound(new { statusCode = 404, message = "NotFound" });
+				return NotFound(new ApiResponse(404));
 			var result = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductToReturnDTO>>(products);
 			return Ok(result);
 		}
@@ -40,7 +41,7 @@ namespace Me.Talabat.APIs.Controllers
 			var productSpecs = new ProductSpecifications(id);
 			var product = await _productRepository.GetWithSpecAsync(productSpecs);
 			if (product is null)
-				return NotFound(new { statusCode = 404, message = "NotFound" });
+				return NotFound(new ApiResponse(404));
 			
 			return Ok(_mapper.Map < Product,ProductToReturnDTO>(product));
 		}
