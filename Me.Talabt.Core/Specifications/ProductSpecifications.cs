@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Me.Talabt.Core.Entities;
+using Me.Talabt.Core.Specifications.ProductSpecs;
 
 namespace Me.Talabt.Core.Specifications
 {
-	public class ProductSpecifications : BaseSpecifications<Product>
+    public class ProductSpecifications : ProductsWithBrandAndCategorySpecifications<Product>
 	{
 		public ProductSpecifications()
 		{

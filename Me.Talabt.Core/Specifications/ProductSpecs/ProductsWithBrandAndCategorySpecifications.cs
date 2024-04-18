@@ -6,20 +6,20 @@ using System.Text;
 using System.Threading.Tasks;
 using Me.Talabt.Core.Entities;
 
-namespace Me.Talabt.Core.Specifications
+namespace Me.Talabt.Core.Specifications.ProductSpecs
 {
-	public class BaseSpecifications<T> :ISpecifications<T> where T : BaseEntity
-	{
-		public Expression<Func<T, bool>> Criteria { get; set; }
+    public class ProductsWithBrandAndCategorySpecifications<T> : ISpecifications<T> where T : BaseEntity
+    {
+        public Expression<Func<T, bool>> Criteria { get; set; }
 
         public List<Expression<Func<T, object>>> Includes { get; set; } = new List<Expression<Func<T, object>>>();
 
-        public BaseSpecifications()
+        public ProductsWithBrandAndCategorySpecifications()
         {
-            
+
         }
 
-        public BaseSpecifications(Expression<Func<T, bool>> criteria)
+        public ProductsWithBrandAndCategorySpecifications(Expression<Func<T, bool>> criteria)
         {
             Criteria = criteria;
         }
