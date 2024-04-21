@@ -8,20 +8,38 @@ using Me.Talabt.Core.Entities;
 
 namespace Me.Talabt.Core.Specifications.ProductSpecs
 {
-    public class ProductsWithBrandAndCategorySpecifications<T> : ISpecifications<T> where T : BaseEntity
+    public class ProductsWithBrandAndCategorySpecifications : BaseSpecifications<Product>
     {
-        public Expression<Func<T, bool>> Criteria { get; set; }
-
-        public List<Expression<Func<T, object>>> Includes { get; set; } = new List<Expression<Func<T, object>>>();
-
-        public ProductsWithBrandAndCategorySpecifications()
+        public ProductsWithBrandAndCategorySpecifications(string sort)
         {
+            if (sort == "priceAsc")
+                AddOrderBy(P => P.Price);
+            else if (sort == "priceDesc")
+                AddOrderByDescending(P => P.Price);
+            else if (sort == "nameDesc")
+                AddOrderByDescending(P => P.Name);
+            else
+                AddOrderBy(P => P.Name);
 
+            AddIncludes();
+        }
+        public ProductsWithBrandAndCategorySpecifications(int id) : base(P => P.Id == id)
+        {
+            AddIncludes();
         }
 
-        public ProductsWithBrandAndCategorySpecifications(Expression<Func<T, bool>> criteria)
+		private void AddIncludes()
         {
-            Criteria = criteria;
+            Includes.Add(P => P.Brand);
+            Includes.Add(P => P.Category);
         }
-    }
+		public void AddOrderBy(Expression<Func<Product, object>> orderByExpression)
+        {
+            OrderBy = orderByExpression;
+        }
+		public void AddOrderByDescending(Expression<Func<Product, object>> orderByExpressionDescending)
+        {
+            OrderByDescending = orderByExpressionDescending;
+        }
+	}
 }

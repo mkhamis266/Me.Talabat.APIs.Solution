@@ -4,7 +4,7 @@ using Me.Talabat.APIs.DTOs;
 using Me.Talabat.APIs.Errors;
 using Me.Talabt.Core.Entities;
 using Me.Talabt.Core.Repositories;
-using Me.Talabt.Core.Specifications;
+using Me.Talabt.Core.Specifications.ProductSpecs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Me.Talabat.APIs.Controllers
@@ -28,10 +28,10 @@ namespace Me.Talabat.APIs.Controllers
 		[HttpGet]
 		[ProducesResponseType(typeof(IReadOnlyList<ProductToReturnDTO>), StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-		public async Task<ActionResult<IReadOnlyList<ProductToReturnDTO>>> GetProducts()
+		public async Task<ActionResult<IReadOnlyList<ProductToReturnDTO>>> GetProducts(string? sort)
 		{
 			//var products = await _productRepository.GetAllAsync();0
-			var productSpecs = new ProductSpecifications();
+			var productSpecs = new ProductsWithBrandAndCategorySpecifications(sort);
 			var products = await _productRepository.GetAllWithSpecsAsync(productSpecs);
 
 			if (products is null)
@@ -47,7 +47,7 @@ namespace Me.Talabat.APIs.Controllers
 		public async Task<ActionResult<ProductToReturnDTO>> GetProduct(int id)
 		{
 			//var product = await _productRepository.GetAsync(id);
-			var productSpecs = new ProductSpecifications(id);
+			var productSpecs = new ProductsWithBrandAndCategorySpecifications(id);
 			var product = await _productRepository.GetWithSpecAsync(productSpecs);
 			if (product is null)
 				return NotFound(new ApiResponse(404));

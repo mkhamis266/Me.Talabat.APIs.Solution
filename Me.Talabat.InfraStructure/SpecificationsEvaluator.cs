@@ -18,6 +18,12 @@ namespace Me.Talabat.InfraStructure
 			if (specs.Criteria is not null)
 				query = query.Where(specs.Criteria);
 
+			if(specs.OrderBy is not null)
+				query = query.OrderBy(specs.OrderBy);
+
+			if(specs.OrderByDescending is not null)
+				query = query.OrderByDescending(specs.OrderByDescending);
+
 			query = specs.Includes.Aggregate(query, (curruntQuery, includesExpression) => curruntQuery.Include(includesExpression));
 
 			return query;
