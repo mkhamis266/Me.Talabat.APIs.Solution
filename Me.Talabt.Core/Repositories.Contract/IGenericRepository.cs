@@ -12,10 +12,10 @@ namespace Me.Talabt.Core.Repositories
 	{
 		public Task<T?> GetAsync(int id);
 
-		public Task<IEnumerable<T>> GetAllAsync();
+		public Task<IReadOnlyList<T>> GetAllAsync();
 
 		public Task<T?> GetWithSpecAsync(ISpecifications<T> specs);
 
-		public Task<IEnumerable<T>> GetAllWithSpecsAsync(ISpecifications<T> specs);
+		public Task<IReadOnlyList<T>> GetAllWithSpecsAsync(ISpecifications<T> specs);
 	}
 }

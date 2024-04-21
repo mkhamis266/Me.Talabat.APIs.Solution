@@ -20,10 +20,10 @@ namespace Me.Talabat.InfraStructure
 			_dbContext = dbContext;
 		}
 
-		public async Task<IEnumerable<T>> GetAllAsync()
+		public async Task<IReadOnlyList<T>> GetAllAsync()
 		{
 			if(typeof(T) == typeof(Product))
-				return await _dbContext.Set<Product>().Include(p => p.Brand).Include(p => p.Category).ToListAsync() as IEnumerable<T>;
+				return await _dbContext.Set<Product>().Include(p => p.Brand).Include(p => p.Category).ToListAsync() as IReadOnlyList<T>;
 			
 			return await _dbContext.Set<T>().ToListAsync<T>();
 		}
@@ -38,7 +38,7 @@ namespace Me.Talabat.InfraStructure
 			return await _dbContext.Set<T>().Where(P => P.Id == id).FirstOrDefaultAsync();
 		}
 
-		public async Task<IEnumerable<T>> GetAllWithSpecsAsync(ISpecifications<T> specs)
+		public async Task<IReadOnlyList<T>> GetAllWithSpecsAsync(ISpecifications<T> specs)
 		{
 			return await ApplySpecifications(specs).AsNoTracking().ToListAsync();
 		}

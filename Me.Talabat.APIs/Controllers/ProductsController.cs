@@ -26,9 +26,9 @@ namespace Me.Talabat.APIs.Controllers
 		}
 
 		[HttpGet]
-		[ProducesResponseType(typeof(IEnumerable<ProductToReturnDTO>), StatusCodes.Status200OK)]
+		[ProducesResponseType(typeof(IReadOnlyList<ProductToReturnDTO>), StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-		public async Task<ActionResult<IEnumerable<ProductToReturnDTO>>> GetProducts()
+		public async Task<ActionResult<IReadOnlyList<ProductToReturnDTO>>> GetProducts()
 		{
 			//var products = await _productRepository.GetAllAsync();0
 			var productSpecs = new ProductSpecifications();
@@ -56,14 +56,14 @@ namespace Me.Talabat.APIs.Controllers
 		}
 
 		[HttpGet("brands")]
-		public async Task<ActionResult<IEnumerable<ProductBrand>>> GetBrands()
+		public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetBrands()
 		{
 			var brands = await _productBrandsRepo.GetAllAsync();
 			return Ok(brands);
 		}
 		
 		[HttpGet("categories")]
-		public async Task<ActionResult<IEnumerable<ProductBrand>>> GetCategories()
+		public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetCategories()
 		{
 			var brands = await _productCategoriesRepo.GetAllAsync();
 			return Ok(brands);
