@@ -14,7 +14,8 @@ namespace Me.Talabt.Core.Specifications.ProductSpecs
 				P =>
 					(
 					 (!specs.BrandId.HasValue || P.BrandId == specs.BrandId) &&
-					 (!specs.CategoryId.HasValue || P.CategoryId == specs.CategoryId)
+					 (!specs.CategoryId.HasValue || P.CategoryId == specs.CategoryId) &&
+					 (string.IsNullOrEmpty(specs.Search) || P.Name.ToLower().Contains(specs.Search))
 					)
 			)
 		{

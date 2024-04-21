@@ -40,7 +40,7 @@ namespace Me.Talabat.APIs.Controllers
 			var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDTO>>(products);
 			var productsSpecsForCount = new ProductsWithFiltersForCountSpecifications(specs);
 			var count = await _productRepository.GetCount(productsSpecsForCount);
-			var paginatedProducts = new Pagination<ProductToReturnDTO>(specs.PageSize,specs.PageSize,count,data);
+			var paginatedProducts = new Pagination<ProductToReturnDTO>(specs.PageIndex,specs.PageSize,count,data);
 			return Ok(paginatedProducts);
 		}
 

@@ -15,7 +15,8 @@ namespace Me.Talabt.Core.Specifications.ProductSpecs
 				P =>
 					(
 					 (!specs.BrandId.HasValue || P.BrandId == specs.BrandId) &&
-					 (!specs.CategoryId.HasValue || P.CategoryId == specs.CategoryId)
+					 (!specs.CategoryId.HasValue || P.CategoryId == specs.CategoryId) &&
+					 (string.IsNullOrEmpty(specs.Search) || P.Name.ToLower().Contains(specs.Search))
 					)
 			)
 		{
@@ -28,7 +29,7 @@ namespace Me.Talabt.Core.Specifications.ProductSpecs
 			else
 				AddOrderBy(P => P.Name);
 
-			ApplyPagination(specs.PageSize, (specs.PageSize - 1) * specs.PageSize);
+			ApplyPagination(specs.PageSize, (specs.PageIndex - 1) * specs.PageSize);
 
 			AddIncludes();
 		}
