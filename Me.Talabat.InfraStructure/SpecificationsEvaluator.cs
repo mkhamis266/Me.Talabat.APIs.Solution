@@ -23,6 +23,8 @@ namespace Me.Talabat.InfraStructure
 
 			if(specs.OrderByDescending is not null)
 				query = query.OrderByDescending(specs.OrderByDescending);
+			if (specs.IsPaginationEnabled)
+				query = query.Skip(specs.Skip).Take(specs.Take);
 
 			query = specs.Includes.Aggregate(query, (curruntQuery, includesExpression) => curruntQuery.Include(includesExpression));
 

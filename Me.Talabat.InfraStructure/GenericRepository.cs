@@ -46,10 +46,16 @@ namespace Me.Talabat.InfraStructure
 		{
 			return await ApplySpecifications(specs).AsNoTracking().FirstOrDefaultAsync();
 		}
+		public async Task<int> GetCount(ISpecifications<T> specs)
+		{
+			return await ApplySpecifications(specs).CountAsync();
+		}
 
 		private IQueryable<T> ApplySpecifications(ISpecifications<T> specs)
 		{
 			return SpecificationsEvaluator<T>.GetQuery(_dbContext.Set<T>(), specs);
 		}
+
+
 	}
 }

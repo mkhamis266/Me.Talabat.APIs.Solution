@@ -2,6 +2,7 @@
 using AutoMapper;
 using Me.Talabat.APIs.DTOs;
 using Me.Talabat.APIs.Errors;
+using Me.Talabat.APIs.Pagination;
 using Me.Talabt.Core.Entities;
 using Me.Talabt.Core.Repositories;
 using Me.Talabt.Core.Specifications.ProductSpecs;
@@ -28,16 +29,19 @@ namespace Me.Talabat.APIs.Controllers
 		[HttpGet]
 		[ProducesResponseType(typeof(IReadOnlyList<ProductToReturnDTO>), StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-		public async Task<ActionResult<IReadOnlyList<ProductToReturnDTO>>> GetProducts(string? sort,int? brandId,int? categoryId)
+		public async Task<ActionResult<IReadOnlyList<ProductToReturnDTO>>> GetProducts([FromQuery] ProductSpecsParams specs)
 		{
 			//var products = await _productRepository.GetAllAsync();0
-			var productSpecs = new ProductsWithBrandAndCategorySpecifications(sort, brandId, categoryId);
+			var productSpecs = new ProductsWithBrandAndCategorySpecifications(specs);
 			var products = await _productRepository.GetAllWithSpecsAsync(productSpecs);
 
 			if (products is null)
 				return NotFound(new ApiResponse(404));
-			var result = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductToReturnDTO>>(products);
-			return Ok(result);
+			var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDTO>>(products);
+			var productsSpecsForCount = new ProductsWithFiltersForCountSpecifications(specs);
+			var count = await _productRepository.GetCount(productsSpecsForCount);
+			var paginatedProducts = new Pagination<ProductToReturnDTO>(specs.PageSize,specs.PageSize,count,data);
+			return Ok(paginatedProducts);
 		}
 
 

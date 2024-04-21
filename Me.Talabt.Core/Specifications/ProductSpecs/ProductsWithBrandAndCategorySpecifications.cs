@@ -8,45 +8,54 @@ using Me.Talabt.Core.Entities;
 
 namespace Me.Talabt.Core.Specifications.ProductSpecs
 {
-    public class ProductsWithBrandAndCategorySpecifications : BaseSpecifications<Product>
-    {
-        public ProductsWithBrandAndCategorySpecifications(string? sort,int? brandId, int? categoryId):base
-            (
-                P=>
-                    (
-                     (!brandId.HasValue || P.BrandId == brandId) &&
-                     (!categoryId.HasValue || P.CategoryId == categoryId)
-                    )
-            )
-        {
-            if (sort == "priceAsc")
-                AddOrderBy(P => P.Price);
-            else if (sort == "priceDesc")
-                AddOrderByDescending(P => P.Price);
-            else if (sort == "nameDesc")
-                AddOrderByDescending(P => P.Name);
-            else
-                AddOrderBy(P => P.Name);
+	public class ProductsWithBrandAndCategorySpecifications : BaseSpecifications<Product>
+	{
+		public ProductsWithBrandAndCategorySpecifications(ProductSpecsParams specs) : base
+			(
+				P =>
+					(
+					 (!specs.BrandId.HasValue || P.BrandId == specs.BrandId) &&
+					 (!specs.CategoryId.HasValue || P.CategoryId == specs.CategoryId)
+					)
+			)
+		{
+			if (specs.Sort == "priceAsc")
+				AddOrderBy(P => P.Price);
+			else if (specs.Sort == "priceDesc")
+				AddOrderByDescending(P => P.Price);
+			else if (specs.Sort == "nameDesc")
+				AddOrderByDescending(P => P.Name);
+			else
+				AddOrderBy(P => P.Name);
 
-            AddIncludes();
-        }
-        public ProductsWithBrandAndCategorySpecifications(int id) : base(P => P.Id == id)
-        {
-            AddIncludes();
-        }
+			ApplyPagination(specs.PageSize, (specs.PageSize - 1) * specs.PageSize);
+
+			AddIncludes();
+		}
+		public ProductsWithBrandAndCategorySpecifications(int id) : base(P => P.Id == id)
+		{
+			AddIncludes();
+		}
 
 		private void AddIncludes()
-        {
-            Includes.Add(P => P.Brand);
-            Includes.Add(P => P.Category);
-        }
+		{
+			Includes.Add(P => P.Brand);
+			Includes.Add(P => P.Category);
+		}
 		public void AddOrderBy(Expression<Func<Product, object>> orderByExpression)
-        {
-            OrderBy = orderByExpression;
-        }
+		{
+			OrderBy = orderByExpression;
+		}
 		public void AddOrderByDescending(Expression<Func<Product, object>> orderByExpressionDescending)
-        {
-            OrderByDescending = orderByExpressionDescending;
-        }
+		{
+			OrderByDescending = orderByExpressionDescending;
+		}
+
+		public void ApplyPagination(int take, int skip)
+		{
+			IsPaginationEnabled = true;
+			Take = take;
+			Skip = skip;
+		}
 	}
 }

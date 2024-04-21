@@ -17,5 +17,7 @@ namespace Me.Talabt.Core.Repositories
 		public Task<T?> GetWithSpecAsync(ISpecifications<T> specs);
 
 		public Task<IReadOnlyList<T>> GetAllWithSpecsAsync(ISpecifications<T> specs);
+
+		public Task<int> GetCount(ISpecifications<T> specs);
 	}
 }
