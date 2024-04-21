@@ -10,7 +10,14 @@ namespace Me.Talabt.Core.Specifications.ProductSpecs
 {
     public class ProductsWithBrandAndCategorySpecifications : BaseSpecifications<Product>
     {
-        public ProductsWithBrandAndCategorySpecifications(string sort)
+        public ProductsWithBrandAndCategorySpecifications(string? sort,int? brandId, int? categoryId):base
+            (
+                P=>
+                    (
+                     (!brandId.HasValue || P.BrandId == brandId) &&
+                     (!categoryId.HasValue || P.CategoryId == categoryId)
+                    )
+            )
         {
             if (sort == "priceAsc")
                 AddOrderBy(P => P.Price);

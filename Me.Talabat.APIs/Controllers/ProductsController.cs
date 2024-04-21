@@ -28,10 +28,10 @@ namespace Me.Talabat.APIs.Controllers
 		[HttpGet]
 		[ProducesResponseType(typeof(IReadOnlyList<ProductToReturnDTO>), StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-		public async Task<ActionResult<IReadOnlyList<ProductToReturnDTO>>> GetProducts(string? sort)
+		public async Task<ActionResult<IReadOnlyList<ProductToReturnDTO>>> GetProducts(string? sort,int? brandId,int? categoryId)
 		{
 			//var products = await _productRepository.GetAllAsync();0
-			var productSpecs = new ProductsWithBrandAndCategorySpecifications(sort);
+			var productSpecs = new ProductsWithBrandAndCategorySpecifications(sort, brandId, categoryId);
 			var products = await _productRepository.GetAllWithSpecsAsync(productSpecs);
 
 			if (products is null)
