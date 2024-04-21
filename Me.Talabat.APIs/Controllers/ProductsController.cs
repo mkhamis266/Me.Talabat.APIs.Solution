@@ -14,11 +14,15 @@ namespace Me.Talabat.APIs.Controllers
 	{
 		private readonly IGenericRepository<Product> _productRepository;
 		private readonly IMapper _mapper;
+		private readonly IGenericRepository<ProductBrand> _productBrandsRepo;
+		private readonly IGenericRepository<ProductCategory> _productCategoriesRepo;
 
-		public ProductsController(IGenericRepository<Product> productRepository, IMapper mapper)
+		public ProductsController(IGenericRepository<Product> productRepository, IMapper mapper,IGenericRepository<ProductBrand> productBrandsRepo,IGenericRepository<ProductCategory> productCategoriesRepo)
 		{
 			_productRepository = productRepository;
 			_mapper = mapper;
+			_productBrandsRepo = productBrandsRepo;
+			_productCategoriesRepo = productCategoriesRepo;
 		}
 
 		[HttpGet]
@@ -50,5 +54,20 @@ namespace Me.Talabat.APIs.Controllers
 			
 			return Ok(_mapper.Map < Product,ProductToReturnDTO>(product));
 		}
+
+		[HttpGet("brands")]
+		public async Task<ActionResult<IEnumerable<ProductBrand>>> GetBrands()
+		{
+			var brands = await _productBrandsRepo.GetAllAsync();
+			return Ok(brands);
+		}
+		
+		[HttpGet("categories")]
+		public async Task<ActionResult<IEnumerable<ProductBrand>>> GetCategories()
+		{
+			var brands = await _productCategoriesRepo.GetAllAsync();
+			return Ok(brands);
+		}
+
 	}
 }
